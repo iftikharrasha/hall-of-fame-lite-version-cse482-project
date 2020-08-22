@@ -40,10 +40,9 @@ body{
 }
 
 .container-middle{
-    width: 65%;
+    width: 56%;
     height: 50px;
-    position: absolute;
-	left: 17%;
+    margin: 0 auto;
     background-color: transparent;
 }
 
@@ -62,6 +61,14 @@ body{
     padding: 6px 0;
 }
 
+.header-brand {
+    position: absolute;
+    padding: 0;
+    margin-top: 7px;
+    width: 100px;
+    margin-left: 14%;
+}
+
 .navbar-top {
     position: relative;
     display: flex;
@@ -72,15 +79,6 @@ body{
     position: relative;
     display: flex;
     padding: .5rem 1rem;
-}
-
-.navbar-brand {
-    position: absolute;
-    padding: 0;
-    margin-top: -39px;
-    margin-bottom: -67px;
-    width: 100px;
-    margin-left: -90px;
 }
 
 .badge{
@@ -671,21 +669,6 @@ img {
     text-decoration: none;
 }
 
-.angle-right{
-    position: absolute;
-    color: white;
-    top: 14px;
-    left: 40px;
-}
-
-.angle-left{
-    position: absolute;
-    color: white;
-    top: 14px;
-    right: 40px;
-}
-
-
 .banner-right{
     position: absolute;
     color: white;
@@ -1225,7 +1208,7 @@ table {
   }
 
   .side-menu, a{
-    color: white;
+    color: black;
   }
  
 
