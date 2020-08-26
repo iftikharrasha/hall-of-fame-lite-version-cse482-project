@@ -12,72 +12,42 @@
 </head>
 
 <body>
-    <div class="header-position">
-        <a class="header-brand" href="">
+    <header>
+        <a class="brand" href="">
             <img src="./images/logo.png" alt="">
         </a>
-        <header class="container-header">
-            <div class="top-nav">
-                <div class="container-top">
-                    <nav class="navbar-top">
-                        <div class="collapse-top">
-                            <ul class="navbar-nav">
-                                <li class="nav-item"><a class="nav-link" href="#"><i class="fa fa-user"></i> My
-                                        Account</a></li>
-                                <li class="top-search">
-                                    <form action="blog.php">
-                                        <input type="text" name="search" id="search" placeholder="Search Here">
-                                    </form>
-                                </li>
-                            </ul>
-                        </div>
-                    </nav>
-                </div>
-            </div>
-            <div class="header-middle">
-                <div class="container-middle">
-                    <div class="menu">
-
-                        <nav class="navbar-middle">
-
-                            <div class="collapse-middle">
-                                <ul class="navbar-nav">
-                                    <li>
-                                        <a href="index.html">Home
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="blog.html">Blog
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="postmakers.html">Postmakers
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="login.html">Login
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="about.html">About
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="contact.html">Contact
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </nav>
-                    </div>
-                </div>
-            </div>
-        </header>
-        <div class="date-bar">
-            <p class="date"><span id="datetime"></span></p>
-
+        <div class="header-nav">
+            <nav class="menu-top">
+                <ul>
+                    <li><a href=""><i class="fa fa-user"></i> Iftikhar Rasha</a></li>
+                    <li class="top-search">
+                        <form action="#">
+                            <input type="text" name="search" id="search" placeholder="Search Here">
+                        </form>
+                    </li>
+                </ul>
+            </nav>
         </div>
-    </div>
+
+        <div class="middle-nav">
+            <nav class="menu-middle">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="blog.html">Blog</a></li>
+                    <li><a href="postmakers.html">Writers</a></li>
+                    <li><a href="login.html">Login</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+        <div class="header-nav">
+            <p class="date">
+                <span id="datetime">
+                </span>
+            </p>
+        </div>
+    </header>
 
     <div class="container">
         <div class="body-content">

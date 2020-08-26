@@ -12,123 +12,88 @@ body{
     background: #cfcfcf;
 }
 
-.header-position{
-	width: 100%;
-    background-color: rgb(0, 0, 0);
-    box-shadow: 0px 1px 2px #e1e1e1;
-}
-
-.container-header {
-    /*position: relative;*/
+header{
     width: 100%;
-    height: 80px;
-}
-
-.top-nav {
-    position: relative;
+    height: 100px;
     background-color: #132C3E;
-    height: 30px;
+    padding: 0;
 }
 
-.container-top{
-    width: 65%;
-    height: 30px;
+.brand {
     position: absolute;
-	left: 17%;
-    background-color: #132C3E;
-    max-width: 1140px;
+    top: 6px;
+    left: 15%;
+    width: 5%;
 }
 
-.container-middle{
-    width: 56%;
-    height: 50px;
-    margin: 0 auto;
-    background-color: transparent;
+.header-nav{
+    height: 30px;
+    color: #fff;
 }
 
-.header-middle {
-    position: absolute;
-    width: 100%;
-    height: 50px;
-    top: 30px;
+.middle-nav{
     background-color: #2A4558;
+    height: 40px;
+    color: #fff;
     background: url(../images/zikzak.png);
     background-repeat: repeat-x;
     background-size: contain;
 }
 
-.menu {
-    padding: 6px 0;
+.menu-top {
+    margin: 0 auto;
+    width: 70%;
+}
+.menu-top ul{
+      display: flex;
+	  margin: 0px 0 0 55%;
 }
 
-.header-brand {
-    position: absolute;
-    padding: 0;
-    margin-top: 7px;
-    width: 100px;
-    margin-left: 14%;
+.menu-top ul li {
+	list-style: none;
+    margin: 5px 0 0 1%;
 }
 
-.navbar-top {
-    position: relative;
-    display: flex;
-    padding: .2rem 1rem;
-}
-
-.navbar-middle {
-    position: relative;
-    display: flex;
-    padding: .5rem 1rem;
-}
-
-.badge{
-    right: 30px;
-    max-width: 30%;
-    width: 30px;
-    height: 40px;
-}
-
-.collapse-middle{
-    flex-basis: auto;
-}
-
-.collapse-top{
-    flex-basis: auto;
-    padding-left: 700px;
-}
-
-
-.navbar-nav{
-    display: flex;
-    list-style: none;
-    flex-direction: row;
-}
-
-.menu .navbar-nav > li > a {
-    font-size: 14px;
-    font-weight: 600;
+.menu-top ul li a {
+    text-decoration: none;
     color: white;
-    padding: 10px 55px;
+}
+
+.menu-top ul li a:hover {
+    color: orange;
+}
+
+
+.menu-middle {
+    margin: 0 auto;
+    width: 70%;
+}
+.menu-middle ul{
+      display: flex;
+}
+
+.menu-middle ul li {
+	list-style: none;
+    margin: 10px 0 0 11%;
+}
+
+.menu-middle ul li a {
     text-decoration: none;
+    color: white;
 }
 
-.menu .navbar-nav > li > a:hover{
-    color: #132C3E;
+.menu-middle ul li a:hover {
+    color: orange;
 }
 
-.top-nav .navbar-top .navbar-nav .nav-item {
-    border-right: .5px solid #E0DBDB;
+.date{
+	float: right;
+    padding: 5px 10% 0 0;
+	color: white;
 }
 
-.top-nav .navbar-nav .nav-link {
-    color: #fff;
-    padding-right: .5rem;
-    padding-left: .5rem;
-    font-size: 12px;
-    text-decoration: none;
-}
 
-img {
+.teacher-pic {
     position: absolute;
     max-width: 80%;
     width: 80px;
@@ -136,19 +101,14 @@ img {
     z-index: 1;
 }
 
-.date-bar{
-    position: relative;
-    background-color: #132C3E;
-    height: 30px;
-    color: #fff;
-    padding-top: 8px;
-    
+.badge{
+    position: absolute;
+    right: 30px;
+    max-width: 30%;
+    width: 30px;
+    height: 40px;
 }
 
-.date{
-    float: right;
-    margin-right: 90px;
-}
 
 .container{
 	position: relative;
@@ -331,6 +291,34 @@ img {
 .view{
     float: right;
     margin: 0 50px 0 0px;
+}
+
+.views{
+    margin: 1% 1% 2% 92%;
+    position: absolute;
+    background-color: #dfd6d6;
+    width: 7%;
+    height: 54px;
+}
+
+.vp1{
+	position: absolute;
+    color: #132C3E;
+    top: 6px;
+    left: 15px;
+    font-size: 14px;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.vp2{
+    position: absolute;
+    color: #132C3E;
+    bottom: 3px;
+    left: 7px;
+    font-size: 14px;
+    font-weight: 700;
+    text-decoration: none;
 }
 
 .body-user-right{
