@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin | New Post
+  </title>
+  <link rel="stylesheet" href="https://use.typekit.net/nfp7kim.css">
+  <link href="https://fonts.googleapis.com/css2?family=Shadows+Into+Light&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+
+<body>
+  <header>
+    <a class="brand" href="">
+      <img src="../../images/logo.png" alt="">
+    </a>
+    <div class="header-nav">
+      <nav class="menu-top">
+        <ul>
+          <li><a href=""><i class="fa fa-user"></i> Iftikhar Rasha</a></li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">About
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="contact.html">Contact Us
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+
+    <div class="middle-nav">
+      <nav class="menu-middle">
+        <ul class="path1">
+          <li><a href="#">New Post</a></li>
+        </ul>
+        <ul class="path2">
+          <li><a href="#">Bell</a></li>
+          <li><a href="#"> Super Admin</a></li>
+          <li><a href="#"> Log Out</a></li>
+        </ul>
+      </nav>
+    </div>
+    <div class="header-nav">
+      <p class="date">
+        <span id="datetime">
+          27-08-20
+        </span>
+      </p>
+    </div>
+  </header>
+  <div class="container">
+    <div class="body-content">
+      <div class="body-adleft">
+        <div class="nav_title" style="border: 0;">
+          <a href="" class="site_title"><i class="fa fa-asterisk"></i>
+            <span>HOF - ADMIN</span></a>
+        </div>
+        <div class="body-adleft-1">
+          <div class="menu_section">
+            <h3></h3>
+            <ul class="nav1 side-menu">
+              <li>
+                <a href="../admin/dashboard.html"><i class="fa fa-home"></i> Home <span
+                    class="fa fa-chevron-down"></span></a>
+                <ul class="nav child_menu">
+                  <li><a href="../admin/dashboard.html"> Dashboard</a></li>
+                </ul>
+              </li>
+
+              <li class="active">
+                <a href="../post/managepost.html"><i class="fa fa-industry"></i> Posts<span
+                    class="fa fa-chevron-down"></span></a>
+                <ul class="nav child_menu" style="display: block;">
+                  <li><a href="../post/managepost.html">Manage Posts</a></li>
+                  <li style="background-color: #5a728b;"><a href="../post/newpost.html">New Post</a></li>
+                </ul>
+              </li>
+
+              <li>
+                <a href="../category/categories.html"><i class="fa fa-stack-overflow"></i> Categories<span
+                    class="fa fa-chevron-down"></span></a>
+                <ul class="nav child_menu">
+                  <li><a href="../category/categories.html">Category List</a></li>
+                </ul>
+              </li>
+
+
+              <li>
+                <a href="../users/userlist.html"><i class="fa fa-graduation-cap"></i> Users<span
+                    class="fa fa-chevron-down"></span></a>
+                <ul class="nav child_menu">
+                  <li><a href="../users/userlist.html">User List</a></li>
+                  <li><a href="../users/adduser.html">Add User</a></li>
+                </ul>
+              </li>
+
+
+              <li>
+                <a href="#"><i class="fa fa-external-link"></i> Mails<span class="fa fa-chevron-down"></span></a>
+                <ul class="nav child_menu">
+                  <li><a href="#">See List</a></li>
+                </ul>
+              </li>
+
+            </ul>
+          </div>
+
+
+        </div>
+
+        <div class="sidebar-footer">
+          <a title="Settings" href="#">
+            <span class="fa fa-cog" aria-hidden="true"></span>
+          </a>
+
+          <a title="Main Site" href="#">
+            <span class="fa fa-phone" aria-hidden="true"></span>
+          </a>
+
+          <a title="Main Site" href="#">
+            <span class="fa fa-send" aria-hidden="true"></span>
+          </a>
+
+          <a title="Logout" href="../../index.html">
+            <span class="fa fa-power-off" aria-hidden="true"></span>
+          </a>
+        </div>
+
+
+        <!--</div>-->
+
+      </div>
+      <div class="body-right">
+
+        <div class="register">
+          <form action="./views/result/result.html">
+            <label class="admin-label al11" for="fname">Post Title</label><br>
+            <input class="field f3" type="text" id="fname" name="fname" value=""><br>
+            <label class="admin-label al22" for="lname">Date</label><br>
+            <input class="field f4" type="date" id="fname" name="fname" value=""><br>
+
+            <label class="admin-label al3" for="fname">Time</label><br>
+            <input class="field f5" type="time" id="fname" name="fname" value=""><br>
+            <label class="admin-label al4" for="lname">Category</label><br>
+            <input class="field f6" type="text" id="fname" name="fname" value=""><br>
+
+            <label class="admin-label al5" for="fname">Image (optional)</label><br>
+            <input class="field f7" type="file" id="fname" name="fname" value=""><br>
+            <label class="admin-label al6" for="lname">Description</label><br>
+            <textarea class="field f8" id="w3review" name="w3review" rows="4" cols="50">
+                    </textarea>
+            <input class="submit s3" type="submit" value="Submit">
+
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <footer class="foot">
+    <p class="comp">nsu.halloffame@info.com
+    </p>
+    <p class="comp2">+880-1728293845
+    </p>
+    <p class="comp3">Bashundhara, R/A, Dhaka
+    </p>
+    <p class="comp4">Developed & Maintained by
+    </p>
+    <a href="http://www.peacebusters.team/" class="peace">Peacebusters
+    </a>
+  </footer>
+</body>
+<script>
+  var dt = new Date();
+  document.getElementById("datetime").innerHTML = (("0" + dt.getDate()).slice(-2)) + "." + (("0" + (dt.getMonth() + 1)).slice(-2)) + "." + (dt.getFullYear()) + " " + (("0" + dt.getHours()).slice(-2)) + ":" + (("0" + dt.getMinutes()).slice(-2));
+</script>
+
+</html>
