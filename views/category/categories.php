@@ -1,10 +1,61 @@
+<?php
+require_once('../../includes/sessions.php');
+require_once('../../includes/functions.php');
+
+if(!isset($_SESSION['username']) && !isset($_SESSION['password'])) {
+    header("Location:../../index.php?login_first");
+}
+
+ //all Categories
+$allCategory= mysqli_query($con, "SELECT * FROM category");
+
+date_default_timezone_set('Asia/Manila');
+$time = time();
+
+if ( isset( $_POST['cat-submit'])) {
+	$dateTime = strftime('%Y-%m-%d',$time);
+	$cat_name = mysqli_real_escape_string($con, $_POST['category']);
+	$author = $_SESSION['username'];
+	
+	if ( empty($cat_name)) {
+		$_SESSION['errorMessage'] = "Field Is Emtpy";
+		Redirect_To('categories.php');
+	}else {
+	
+	$query = "INSERT INTO category (cat_datetime, cat_name, cat_creator) 
+		VALUES ('$dateTime', '$cat_name', '$author')";
+		$exec = Query($query);
+		if ($exec) {
+			$_SESSION['catSuccess'] = "Category Added Successfully";
+			Redirect_To('categories.php?category_added');
+		}else {
+			$_SESSION['errorMessage'] = "Please Try Again!";
+		}
+}
+}
+
+if ( isset( $_POST['delcat-submit'])) {
+	$catid=$_POST['delete_id'];
+   
+    $result="DELETE FROM category WHERE cat_id='$catid'";
+	$exec = Query($result);
+
+    if($exec) {
+		$_SESSION['catSuccess'] = "Category Deleted Successfully";
+		Redirect_To('categories.php?deletesuccess');
+    } else {
+		$_SESSION['errorMessage'] = "Please Try Again!";
+    }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin | User List
+  <title>Admin | Category
   </title>
   <link rel="stylesheet" href="https://use.typekit.net/nfp7kim.css">
   <link href="https://fonts.googleapis.com/css2?family=Shadows+Into+Light&display=swap" rel="stylesheet">
@@ -14,6 +65,9 @@
 
 <body>
   <div class="header-position">
+              <a class="header-brand" href="">
+                <img src="../../images/logo.png" alt="">
+              </a>
     <header class="container-header">
       <div class="top-nav">
         <div class="container-top">
@@ -23,7 +77,7 @@
                 <li class="nav-item">
                   <a class="nav-link" href="#">
                     <i class="fa fa-user">
-                    </i> My Account
+                    </i><?php echo $_SESSION['username']; ?>
                   </a>
                 </li>
                 <li class="nav-item">
@@ -41,15 +95,12 @@
       </div>
       <div class="header-middle">
         <div class="container-middle">
-          <div class="menu">
+          <div class="menu-admin">
             <nav class="navbar-middle">
-              <a class="navbar-brand" href="">
-                <img src="../../images/logo.png" alt="">
-              </a>
               <div class="collapse-middle">
                 <ul class="navbar-nav">
                   <li>
-                    <a href="">User List
+                    <a href="">Category
                     </a>
                   </li>
                   <li>
@@ -69,11 +120,11 @@
                     </a>
                   </li>
                   <li>
-                    <a href="alumni.html">Super Admin<i class="fa fa-chevron-down"></i>
+                    <a href="alumni.html"><?php echo $_SESSION['username']; ?><i class="fa fa-chevron-down"></i>
                     </a>
                   </li>
                   <li>
-                    <a href="../../index.html">Log Out <i class="fa fa-power-off"></i>
+                    <a href="../../includes/logout.php">Log Out <i class="fa fa-power-off"></i>
                     </a>
                   </li>
                 </ul>
@@ -90,7 +141,7 @@
       </p>
     </div>
   </div>
-  <div class="container">
+  <div class="container-admin">
     <div class="body-content">
       <div class="body-adleft">
         <div class="nav_title" style="border: 0;">
@@ -102,37 +153,36 @@
             <h3></h3>
             <ul class="nav1 side-menu">
               <li>
-                <a href="../admin/dashboard.html"><i class="fa fa-home"></i> Home <span
+                <a href="../admin/dashboard.php"><i class="fa fa-home"></i> Home <span
                     class="fa fa-chevron-down"></span></a>
                 <ul class="nav child_menu">
-                  <li><a href="../admin/dashboard.html"> Dashboard</a></li>
+                  <li><a href="../admin/dashboard.php"> Dashboard</a></li>
                 </ul>
               </li>
 
               <li>
-                <a href="../post/managepost.html"><i class="fa fa-industry"></i> Posts<span
+                <a href="../post/managepost.php"><i class="fa fa-industry"></i> Posts<span
                     class="fa fa-chevron-down"></span></a>
                 <ul class="nav child_menu">
-                  <li><a href="../post/managepost.html">Manage Posts</a></li>
-                  <li><a href="../post/newpost.html">New Post</a></li>
+                  <li><a href="../post/managepost.php">Manage Posts</a></li>
+                  <li><a href="../post/newpost.php">New Post</a></li>
                 </ul>
               </li>
-
-              <li>
-                <a href="../category/categories.html"><i class="fa fa-stack-overflow"></i> Categories<span
-                    class="fa fa-chevron-down"></span></a>
-                <ul class="nav child_menu">
-                  <li><a href="../category/categories.html">Category List</a></li>
-                </ul>
-              </li>
-
 
               <li class="active">
-                <a href="../users/userlist.html"><i class="fa fa-graduation-cap"></i> Users<span
+                <a href="../category/categories.php"><i class="fa fa-stack-overflow"></i> Categories<span
                     class="fa fa-chevron-down"></span></a>
                 <ul class="nav child_menu" style="display: block;">
-                  <li style="background-color: #5a728b;"><a href="../users/userlist.html">User List</a></li>
-                  <li><a href="../users/adduser.html">Add User</a></li>
+                  <li style="background-color: #5a728b;"><a href="../category/categories.php">Category List</a></li>
+                </ul>
+              </li>
+
+
+              <li>
+                <a href="../users/userlist.php"><i class="fa fa-graduation-cap"></i> Users<span
+                    class="fa fa-chevron-down"></span></a>
+                <ul class="nav child_menu">
+                  <li><a href="../users/userlist.php">User List</a></li>
                 </ul>
               </li>
 
@@ -163,7 +213,7 @@
             <span class="fa fa-send" aria-hidden="true"></span>
           </a>
 
-          <a title="Logout" href="../../index.html">
+          <a title="Logout" href="../../includes/logout.php">
             <span class="fa fa-power-off" aria-hidden="true"></span>
           </a>
         </div>
@@ -173,96 +223,52 @@
 
       </div>
       <div class="body-right">
-        <div class="body-deptright-3">
-          <table class="body-notice-below">
-            <tbody>
+        <div class="body-deptright-1">
+          <div class="blog-content nc1">
+		  <p class="bdl2_message">
+		    <?php echo ErrorMessage(); ?>
+            <?php echo CatSuccess(); ?>
+          </p>
+		   <form action="categories.php" method="post">
+				<label class="top-blog">Add Category</label>
+				<span>
+				  <input name="category" type="text" placeholder="" minlength="3" value="">
+				</span>
+				<button class="submit s5 s6" name="cat-submit" type="submit">submit</button>
+			</form>
+          </div>
+        </div>
+        <div class="body-deptright-2">
+          <table class="body-dept-below">
+            <thead>
               <tr>
-                <th>Name</th>
-                <th>Joining</th>
-                <th>Phone</th>
-                <th>Email</th>
-                <th>Image</th>
-                <th>Description</th>
-                <th>Action</th>
-
+                <th>Category List</th>
+                <th>EDIT</th>
+				<th>DELETE</th>
               </tr>
-              <tr>
-                <td>Admission Test - 2020</td>
-                <td>20/07/20</td>
-                <td>6:45am</th>
-                <td>Admission</th>
-                <td>admission.png</th>
-                <td>Lorem ipsum dolor sit, amet aadad and he knew sa..</th>
-                <td><button title="edit" type="submit"><i class="fa fa-pencil-square-o "></i></button></td>
-              </tr>
-              <tr>
-                <td>Annual Sports</td>
-                <td>20/07/20</td>
-                <td>7:05am</th>
-                <td>Sports</th>
-                <td>Sports.png</th>
-                <td>Lorem ipsum dolor sit, amet aadad and he knew sa..</th>
-                <td><button title="edit" type="submit"><i class="fa fa-pencil-square-o "></i></button></td>
-              </tr>
-              <tr>
-                <td>Results published</td>
-                <td>20/07/20</td>
-                <td>2:21pm</th>
-                <td>Result</th>
-                <td>Result.png</th>
-                <td>Lorem ipsum dolor sit, amet aadad and he knew sa..</th>
-                <td><button title="edit" type="submit"><i class="fa fa-pencil-square-o "></i></button></td>
-              </tr>
-              <tr>
-                <td>Cadet Coaching</td>
-                <td>20/07/20</td>
-                <td>6:05am</th>
-                <td>coaching</th>
-                <td>coaching.png</th>
-                <td>Lorem ipsum dolor sit, amet aadad and he knew sa..</th>
-                <td><button title="edit" type="submit"><i class="fa fa-pencil-square-o "></i></button></td>
-              </tr>
-              <tr>
-                <td>Financial Aid - 2020</td>
-                <td>20/07/20</td>
-                <td>9:45pm</th>
-                <td>Financial</th>
-                <td>Financial.png</th>
-                <td>Lorem ipsum dolor sit, amet aadad and he knew sa..</th>
-                <td><button title="edit" type="submit"><i class="fa fa-pencil-square-o "></i></button></td>
-              </tr>
-              <tr>
-                <td>Picnic 2020</td>
-                <td>20/07/20</td>
-                <td>11:11am</th>
-                <td>Festival</th>
-                <td>Festival.png</th>
-                <td>Lorem ipsum dolor sit, amet aadad and he knew sa..</th>
-                <td><button title="edit" type="submit"><i class="fa fa-pencil-square-o "></i></button></td>
-              </tr>
-              <tr>
-                <td>Writing Competition</td>
-                <td>20/07/20</td>
-                <td>6:35pm</th>
-                <td>Competition</th>
-                <td>admission.png</th>
-                <td>Lorem ipsum dolor sit, amet aadad and he knew sa..</th>
-                <td><button title="edit" type="submit"><i class="fa fa-pencil-square-o "></i></button></td>
-              </tr>
-
-
+			</thead>
+			<tbody>
+                <?php
+                    foreach ($allCategory as $category){
+                ?>
+                <tr>
+                    <td><?=$category['cat_name']?></td>
+                    <td class="jsgrid-align-center">
+                    <a title="Edit" class="btn btn-sm btn-info" href="categories.php"><i class="fa fa-pencil-square-o"></i></a>
+                    </td>
+                    <td class="jsgrid-align-center">
+						 <form action="categories.php" method="post">
+							 <input type="hidden" name="delete_id" value="<?=$category['cat_id']?>">
+							 <button type = "submit" name="delcat-submit" class="btn btn-sm btn-info waves-effect waves-light" onclick="return confirm('Are you sure to delete this data?')"><i class="fa fa-trash-o"></i></button>
+						 </form>
+                    </td>
+                </tr>
+                
+				<?php
+                    }
+                ?>
             </tbody>
           </table>
-        </div>
-        <div class="pagination pg3">
-          <a href="#">«</a>
-          <a href="#">1</a>
-          <a class="active" href="#">2</a>
-          <a href="#">3</a>
-          <a href="#">4</a>
-          <a href="#">5</a>
-          <a href="#">6</a>
-          <a href="#">»</a>
         </div>
       </div>
     </div>

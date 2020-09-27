@@ -1,0 +1,11 @@
+CREATE TABLE `cms_user` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `date_time` varchar(50) NOT NULL,
+  `username` varchar(50) NOT NULL,
+  `password` varchar(50) NOT NULL,
+  `added_by` varchar(50) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+INSERT INTO `cms_user` (`id`, `date_time`, `username`, `password`, `added_by`) VALUES
+(1, '2017-06-21 07:46:20 ', 'user', 'user123', 'admin');

@@ -1,0 +1,2 @@
+<?xml version="1.0"?>
+<form action="contact.php" method="POST"><table><tr><td><label class="admin-label al11" for="fname">YOUR QUERY</label class="admin-label al11" for="fname"></td><td><input class="field f9" type="text" id="fname" name="query" value=""/></td></tr><tr><td><label class="admin-label al33" for="lname">YOUR EMAIL</label class="admin-label al33" for="lname"></td><td><input class="field f10" type="text" id="fname" name="email" value=""/></td></tr><tr><td/><td><input class="submit s4" name= "submit" type="submit" value="Submit"/></td></tr></table></form>
