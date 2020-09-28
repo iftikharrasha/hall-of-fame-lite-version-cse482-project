@@ -1,11 +1,13 @@
 <?php
 require_once('dbconnect.php');
 
+//redirect function
 function Redirect_To ($location) {
 	header('location:' . $location);
 	exit;
 }  
 
+//query function
 function Query ($query) {
 	global $con;
 
@@ -22,6 +24,7 @@ function Query ($query) {
 	return false;
 }
 
+//admin login attemt
 function LoginAttempt($username, $password) {
 	$query = "SELECT * FROM admin WHERE username = '$username'  AND password = '$password'";
 	$exec = Query($query);
@@ -32,6 +35,7 @@ function LoginAttempt($username, $password) {
 	}
 }
 
+//user login attemt
 function userAttempt($username, $password) {
 	$query = "SELECT * FROM user WHERE username = '$username'  AND password = '$password'";
 	$exec = Query($query);
@@ -42,5 +46,11 @@ function userAttempt($username, $password) {
 	}
 
 }
+
+//connection close
+function conectionEnd($value)
+  {
+    mysqli_close($value);
+  }
 
 ?>

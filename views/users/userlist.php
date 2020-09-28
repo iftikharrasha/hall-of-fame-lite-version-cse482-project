@@ -1,20 +1,19 @@
 <?php
 	require_once('../../includes/sessions.php');
-	require_once('../../includes/functions.php');
 	
 	if(!isset($_SESSION['username']) && !isset($_SESSION['password'])) {
 		header("Location:../../index.php?login_first");
 	}
 	
-	if ( isset( $_POST['delpost-submit'])) {
-		$postid=$_POST['delete_id'];
+	if ( isset( $_POST['deluser-submit'])) {
+		$userid=$_POST['delete_id'];
 		
-		$result="DELETE FROM post WHERE post_id='$postid'";
+		$result="DELETE FROM user WHERE id='$userid'";
 		
 		$exec = Query($result);
 		if($exec) {
-			$_SESSION['successMessage'] = "Post Deleted Successfully";
-			Redirect_To('managepost.php?deletesuccess');
+			$_SESSION['successMessage'] = "User Deleted Successfully";
+			Redirect_To('userlist.php?deletesuccess');
 		} else {
 			$_SESSION['errorMessage'] = "Please Try Again!";
 		}
@@ -25,12 +24,25 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin |Manage Posts
+    <title>Admin | Users List
     </title>
     <link rel="stylesheet" href="https://use.typekit.net/nfp7kim.css">
     <link href="https://fonts.googleapis.com/css2?family=Shadows+Into+Light&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="../../css/style.css">
+    <script type="text/javascript">
+      function usersearchTxt(str) {
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function () {
+          if(this.readyState == 4 && this.status == 200){
+            var responseText = "<table><tr><th>Post No</th><th>Id</th><th>Full Name</th><th>Username</th><th>Email</th><th>Phone</th></tr>".concat(this.responseText,"</table>");
+            document.getElementById('searchTable').innerHTML = responseText;
+          }
+        }
+        xmlhttp.open("GET","DBManager.php?search="+str,true);
+        xmlhttp.send();
+      }
+    </script>
   </head>
   <body>
     <div class="header-position">
@@ -70,7 +82,7 @@
                 <div class="collapse-middle">
                   <ul class="navbar-nav">
                     <li>
-                      <a href="">Manage Post
+                      <a href="">Users List
                       </a>
                     </li>
                     <li>
@@ -156,8 +168,8 @@
                         class="fa fa-chevron-down">
                   </span>
                 </a>
-                <ul class="nav child_menu" style="display: block;">
-                  <li style="background-color: #5a728b;">
+                <ul class="nav child_menu">
+                  <li>
                     <a href="../post/managepost.php">Manage Posts
                     </a>
                   </li>
@@ -190,8 +202,8 @@
                         class="fa fa-chevron-down">
                   </span>
                 </a>
-                <ul class="nav child_menu">
-                  <li>
+                <ul class="nav child_menu" style="display: block;">
+                  <li style="background-color: #5a728b;">
                     <a href="../users/userlist.php">User List
                     </a>
                   </li>
@@ -221,185 +233,35 @@
         <!--</div>-->
       </div>
       <div class="body-right">
-	    <p class="bdl2_message" style="left: 25px;">
-                  <?php echo Message(); ?>
-        </p>
         <div class="body-deptright-3">
-<?php
-	$postNo = 1;
-	$page = 1;
-	
-	if ( isset($_GET['page'])){
-		$page = $_GET['page'];
-		$showPost = ($page * 5) - 5;
-		if ($page <= 0) {
-			$showPost = 0;
-		}
-		
-		$sql = "SELECT * FROM post ORDER BY post_date_time LIMIT $showPost,5";
-		
-	}else{
-		$sql = "SELECT * FROM post ORDER BY post_date_time LIMIT 0,5";
-	}
-	$exec = Query($sql);
-	if (mysqli_num_rows($exec) < 1) {
-?>
-          <p class="lead">You Have 0 Post For The Moment
-          </p>
-          <a href="newpost.php">
-            <button class="btn btn-info">Add Post
-            </button>
-          </a>
-<?php
-	}else{
-?>
-				
           <div class="container">
             <div class="row">
               <div class="col-lg-12" style="height: 540px;">
-                
-                <table class="body-manage">
-                  <tbody>
+                <p class="bdl2_message" style="left: 25px;">
+                  <?php echo Message(); ?>
+                </p>
+                <input id="searchBox" type="text" name="" value="" onkeyup="usersearchTxt(document.getElementById('searchBox').value);">  
+                <div id="searchTable">
+                  <table>
                     <tr>
-                      <th>Post No.
+                      <th>Post No
                       </th>
-                      <th>Post Date
+                      <th>Id
                       </th>
-                      <th>Date Title
+                      <th>Full Name
                       </th>
-                      <th>Author
+                      <th>Username
                       </th>
-                      <th>Category
+                      <th>email
                       </th>
-                      <th>Feature Image
-                      </th>
-                      <th>Edit
-                      </th>
-                      <th>Delete
-                      </th>
-                      <th>Details
+                      <th>phone
                       </th>
                     </tr>
 <?php
-	while ($post = mysqli_fetch_assoc($exec)) {
-		$post_id = $post['post_id'];
-		$post_date = $post['post_date_time'];
-		$post_title = $post['title'];
-		$category = $post['category'];
-		$author = "Admin";
-		$image = $post['image'];
+	include 'DBManager.php';
+	fetch();
 ?>
-                    <tr>
-                      <td>
-                        <?php echo $postNo; ?>
-                      </td>
-                      <td>
-                        <?php echo $post_date; ?>
-                      </td>
-                      <td>
-<?php 
-	if(strlen($post_title) > 20 ) {
-		echo substr($post_title,0,20) . '...';
-	}else {
-		echo $post_title;
-	}
-?>
-                      </td>
-                      <td>
-                        <?php echo $author; ?>
-                      </td>
-                      <td>
-                        <?php echo $category; ?>
-                      </td>
-                      <td class="i1">
-                        <?php echo "<img class='img-responsive' src='../../images/upload/$image'"; ?>
-                      </td>   
-                    
-                      <td class="jsgrid-align-center">
-                        <a class="btn btn-sm btn-info" href="editpost.php?post_id=<?php echo $post_id;?>">
-                          <i class="fa fa-pencil-square-o">
-                          </i>
-                        </a>
-                      </td>
-                      <td class="jsgrid-align-center">
-                        <form action="managepost.php?delete_post_id=<?php echo $post_id;?>" method="post">
-                          <input type="hidden" name="delete_id" value="<?php echo $post_id;?>">
-                          <button type="submit" name="delpost-submit" class="btn btn-sm btn-info waves-effect waves-light" onclick="return confirm('Are you sure to delete this data?')">
-                            <i class="fa fa-trash-o">
-                            </i>
-                          </button>
-                        </form>
-                      </td>
-                      <td>
-                        <a href="../../seepost.php?id=<?php echo $post_id;?>">
-                          <button class="btn btn-primary">Live Preview
-                          </button>
-                        </a>
-                      </td>
-                    </tr>
-<?php
-			$postNo++;
-		}														
-	}
-?>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-          <div class="container">
-            <div class="row mt-5">
-              <div class="col-lg-12 text-center">
-                <div class="pagi pagi2">
-<?php  if(!isset($_GET['category'])) { ?>
-                  <ul class="pagination">
-<?php
-	if ($page > 1) {
-?>
-                    <li>
-                      <a href="managepost.php?page=<?php echo $page - 1; ?>">
-                        <
-                      </a>
-                        </li>
-<?php
-	}
-	$sql = "SELECT COUNT(*) FROM post";
-	
-	$exec = Query($sql);
-	$rowCount = mysqli_fetch_array($exec);
-	$totalRow = array_shift($rowCount);
-	$postPerPage = ceil($totalRow / 5);
-	
-	for ($count = 1; $count <= $postPerPage; $count++){
-		if ($page == $count) {
-?>
-                    <li class="active">
-                      <a href="managepost.php?page=<?php echo $count ?>">
-                        <?php echo $count ?>
-                      </a>
-                    </li>
-<?php
-			}else {
-?>
-                    <li>
-                      <a href="managepost.php?page=<?php echo $count ?>">
-                        <?php echo $count ?>
-                      </a>
-                    </li>
-<?php
-			}		
-		}
-		if($page < $postPerPage) {
-?>
-                    <li>
-                      <a href="managepost.php?page=<?php echo $page + 1; ?>">>
-                      </a>
-                    </li>
-<?php
-		}
-	}
-?>
-                  </ul>
+                  </table>
                 </div>
               </div>
             </div>

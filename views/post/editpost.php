@@ -6,26 +6,70 @@
 		header("Location:../../index.php?login_first");
 	}
 	
-	if ( isset( $_POST['delpost-submit'])) {
-		$postid=$_POST['delete_id'];
+	date_default_timezone_set('Asia/Manila');
+	$time = time();
+	
+	if ( isset( $_POST['post-update'])) {
+		$title = mysqli_real_escape_string($con, $_POST['post-title']);
+		$category = mysqli_real_escape_string($con, $_POST['post-category']);
+		$content = mysqli_real_escape_string($con, $_POST['post-content']);
+		$image = $_FILES['post-image']['name'];
+		$author = $_SESSION['username'];
+		$dateTime = strftime('%Y-%m-%d',$time);
+		$title_length = strlen($title);
+		$content_lenght = strlen($content);
+		$imageDirectory = "../../images/upload/" . basename($_FILES['post-image']['name']);
 		
-		$result="DELETE FROM post WHERE post_id='$postid'";
-		
-		$exec = Query($result);
-		if($exec) {
-			$_SESSION['successMessage'] = "Post Deleted Successfully";
-			Redirect_To('managepost.php?deletesuccess');
-		} else {
-			$_SESSION['errorMessage'] = "Please Try Again!";
+		if ( empty($title)) {
+			$_SESSION['errorMessage'] = "Title Is Emtpy";
+			Redirect_To('newpost.php');
+		}else if ( $title_length > 50) {
+			$_SESSION['errorMessage'] = "Title Is Too Long";
+			Redirect_To('newpost.php');
+		}else if ( empty($content)) {
+			$_SESSION['errorMessage'] = "Content Is Empty";
+			Redirect_To('newpost.php');
+		}else if ( $content_lenght > 4000) {
+			$_SESSION['errorMessage'] = "Content Is Too Long";
+			Redirect_To('newpost.php');
+		}else {
+            
+            $query = "UPDATE post SET post_date_time ='$dateTime', title = '$title', category = '$category', author ='$author', image = '$image', post = '$content' WHERE post_id = '$_POST[idFromUrl]'";
+			
+			$exec = Query($query);
+			if ($exec) {
+				move_uploaded_file($_FILES['post-image']['tmp_name'], $imageDirectory);
+                Redirect_To('managepost.php?post_udated');
+			}else {
+				$_SESSION['errorMessage'] = "Something Went Wrong Please Try Again";
+			}
 		}
-	}
+	}else if( isset($_GET['post_id'])) {
+        if (!empty($_GET['post_id'])) {
+            $sql = "SELECT * FROM post WHERE post_id = '$_GET[post_id]'";
+            $exec = Query($sql);
+            if (mysqli_num_rows($exec) > 0 ) {
+                if ($post = mysqli_fetch_assoc($exec)) {
+                    $post_id = $post['post_id'];
+                    $post_date = $post['post_date_time'];
+                    $post_title = $post['title'];
+                    $post_category = $post['category'];
+                    $post_author = $post['author'];
+                    $post_image = $post['image'];
+                    $post_content = $post['post'];
+                }
+            } 
+        }
+    }else {
+        Redirect_To('../admin/dashboard.php?not_found!');
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin |Manage Posts
+    <title>Admin | Edit Post
     </title>
     <link rel="stylesheet" href="https://use.typekit.net/nfp7kim.css">
     <link href="https://fonts.googleapis.com/css2?family=Shadows+Into+Light&display=swap" rel="stylesheet">
@@ -70,7 +114,7 @@
                 <div class="collapse-middle">
                   <ul class="navbar-nav">
                     <li>
-                      <a href="">Manage Post
+                      <a href="">Edit Post
                       </a>
                     </li>
                     <li>
@@ -118,7 +162,7 @@
     </div>
     </div>
   <div class="container-admin">
-    <div class="manage-content">
+    <div class="body-content">
       <div class="body-adleft">
         <div class="nav_title" style="border: 0;">
           <a href="" class="site_title">
@@ -148,7 +192,7 @@
                   </li>
                 </ul>
               </li>
-              <li class="active">
+              <li>
                 <a href="../post/managepost.php">
                   <i class="fa fa-industry">
                   </i> Posts
@@ -156,8 +200,8 @@
                         class="fa fa-chevron-down">
                   </span>
                 </a>
-                <ul class="nav child_menu" style="display: block;">
-                  <li style="background-color: #5a728b;">
+                <ul class="nav child_menu">
+                  <li>
                     <a href="../post/managepost.php">Manage Posts
                     </a>
                   </li>
@@ -221,189 +265,44 @@
         <!--</div>-->
       </div>
       <div class="body-right">
-	    <p class="bdl2_message" style="left: 25px;">
-                  <?php echo Message(); ?>
-        </p>
-        <div class="body-deptright-3">
-<?php
-	$postNo = 1;
-	$page = 1;
-	
-	if ( isset($_GET['page'])){
-		$page = $_GET['page'];
-		$showPost = ($page * 5) - 5;
-		if ($page <= 0) {
-			$showPost = 0;
-		}
-		
-		$sql = "SELECT * FROM post ORDER BY post_date_time LIMIT $showPost,5";
-		
-	}else{
-		$sql = "SELECT * FROM post ORDER BY post_date_time LIMIT 0,5";
-	}
-	$exec = Query($sql);
-	if (mysqli_num_rows($exec) < 1) {
-?>
-          <p class="lead">You Have 0 Post For The Moment
+        <div class="register">
+          <p class="bdl2_message">
+            <?php echo Message(); ?>
           </p>
-          <a href="newpost.php">
-            <button class="btn btn-info">Add Post
-            </button>
-          </a>
+          <form action="editpost.php" method="POST" enctype="multipart/form-data">
+          <input type="hidden" name="idFromUrl" value="<?php echo $_GET['post_id']; ?>">
+            <label class="admin-label al11" for="fname">Update Post Title
+            </label>
+            <br>
+            <input class="field f3" type="text" id="fname" name="post-title" value="<?php echo $post_title ?>">
+            <br>
+            <label class="admin-label al4" for="lname">Update Category
+            </label>
+            <br>
+            <select class="field f6" name="post-category" id="post-category">
 <?php
-	}else{
-?>
-				
-          <div class="container">
-            <div class="row">
-              <div class="col-lg-12" style="height: 540px;">
-                
-                <table class="body-manage">
-                  <tbody>
-                    <tr>
-                      <th>Post No.
-                      </th>
-                      <th>Post Date
-                      </th>
-                      <th>Date Title
-                      </th>
-                      <th>Author
-                      </th>
-                      <th>Category
-                      </th>
-                      <th>Feature Image
-                      </th>
-                      <th>Edit
-                      </th>
-                      <th>Delete
-                      </th>
-                      <th>Details
-                      </th>
-                    </tr>
-<?php
-	while ($post = mysqli_fetch_assoc($exec)) {
-		$post_id = $post['post_id'];
-		$post_date = $post['post_date_time'];
-		$post_title = $post['title'];
-		$category = $post['category'];
-		$author = "Admin";
-		$image = $post['image'];
-?>
-                    <tr>
-                      <td>
-                        <?php echo $postNo; ?>
-                      </td>
-                      <td>
-                        <?php echo $post_date; ?>
-                      </td>
-                      <td>
-<?php 
-	if(strlen($post_title) > 20 ) {
-		echo substr($post_title,0,20) . '...';
-	}else {
-		echo $post_title;
-	}
-?>
-                      </td>
-                      <td>
-                        <?php echo $author; ?>
-                      </td>
-                      <td>
-                        <?php echo $category; ?>
-                      </td>
-                      <td class="i1">
-                        <?php echo "<img class='img-responsive' src='../../images/upload/$image'"; ?>
-                      </td>   
-                    
-                      <td class="jsgrid-align-center">
-                        <a class="btn btn-sm btn-info" href="editpost.php?post_id=<?php echo $post_id;?>">
-                          <i class="fa fa-pencil-square-o">
-                          </i>
-                        </a>
-                      </td>
-                      <td class="jsgrid-align-center">
-                        <form action="managepost.php?delete_post_id=<?php echo $post_id;?>" method="post">
-                          <input type="hidden" name="delete_id" value="<?php echo $post_id;?>">
-                          <button type="submit" name="delpost-submit" class="btn btn-sm btn-info waves-effect waves-light" onclick="return confirm('Are you sure to delete this data?')">
-                            <i class="fa fa-trash-o">
-                            </i>
-                          </button>
-                        </form>
-                      </td>
-                      <td>
-                        <a href="../../seepost.php?id=<?php echo $post_id;?>">
-                          <button class="btn btn-primary">Live Preview
-                          </button>
-                        </a>
-                      </td>
-                    </tr>
-<?php
-			$postNo++;
-		}														
-	}
-?>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-          <div class="container">
-            <div class="row mt-5">
-              <div class="col-lg-12 text-center">
-                <div class="pagi pagi2">
-<?php  if(!isset($_GET['category'])) { ?>
-                  <ul class="pagination">
-<?php
-	if ($page > 1) {
-?>
-                    <li>
-                      <a href="managepost.php?page=<?php echo $page - 1; ?>">
-                        <
-                      </a>
-                        </li>
-<?php
-	}
-	$sql = "SELECT COUNT(*) FROM post";
+	$sql = "SELECT * FROM category";
 	
 	$exec = Query($sql);
-	$rowCount = mysqli_fetch_array($exec);
-	$totalRow = array_shift($rowCount);
-	$postPerPage = ceil($totalRow / 5);
-	
-	for ($count = 1; $count <= $postPerPage; $count++){
-		if ($page == $count) {
-?>
-                    <li class="active">
-                      <a href="managepost.php?page=<?php echo $count ?>">
-                        <?php echo $count ?>
-                      </a>
-                    </li>
-<?php
-			}else {
-?>
-                    <li>
-                      <a href="managepost.php?page=<?php echo $count ?>">
-                        <?php echo $count ?>
-                      </a>
-                    </li>
-<?php
-			}		
-		}
-		if($page < $postPerPage) {
-?>
-                    <li>
-                      <a href="managepost.php?page=<?php echo $page + 1; ?>">>
-                      </a>
-                    </li>
-<?php
-		}
+	while($row = mysqli_fetch_assoc($exec)){
+		echo "<option>$row[cat_name]</option>";
 	}
 ?>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
+            </select>
+            <br>
+            <label class="admin-label al5" for="post-image">Update Image
+            </label>
+            <br>
+            <input class="field f7" id="fname" type="File" name="post-image" value="<?php echo $post_image; ?>">
+            <br>
+            <label class="admin-label al6" for="lname">Update Description
+            </label>
+            <br>
+            <textarea class="field f8" id="w3review" name="post-content" rows="10"><?php echo htmlentities($post_content);  mysqli_close($con); ?>
+            </textarea>
+            <button name="post-update" class="submit s3">Update
+            </button>
+          </form>
         </div>
       </div>
     </div>
